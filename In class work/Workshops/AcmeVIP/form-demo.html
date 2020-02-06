@@ -1,0 +1,61 @@
+<html>
+<head>
+<style>
+    form
+    {
+        border: solid 1px black;
+        padding: 3rem;
+        margin: 0 20%;
+        display: flex;
+        flex-direction: column;
+    }
+    form > *
+    {
+        margin: 1rem;
+    }
+input, button
+{
+    height: 3rem;
+}
+</style>
+</head>
+<body>
+<h1>Form Demo<span> Click</span> </h1>
+<form>
+    <input name='email' placeholder="enter email"/>
+    <input name='date of hire' placeholder="enter date of hire"/>
+    <button class = 'clear'>Clear Date of Hire</button>
+    <button>Save</button>
+</form>
+<script>
+    const form = document.querySelector('form');
+    span.addEventListener('click', (ev)=>
+    {
+
+    })
+    form.addEventListener('submit', (ev)=>
+    {
+        ev.preventDefault();
+        console.log(ev);
+        const clearButton = form.querySelector('clear');
+        clearButton.addEventListener('click', ()=>
+        {
+            ev.preventDefault();
+            //ev.stopPropagation();
+            console.log('clicked');
+        });
+        const emailInput = form.querySelector('[name="email"]');
+        const dateOfHireInput = form.querySelector('[name="dateOfHire"]');
+        const dateOfHire = new Data(dateOfHire.value);
+        console.log(emailInput.value);
+        console.log(dateOfHire.toLocaleDateString());
+        const diff = new Date() - dateOfHire;
+        const mainYear = 1000*60*60*24*365;
+
+        console.log(diff/mainYear).toFixed(1);
+    })
+    </script>
+</body>
+</html>
+
+{hdhft}

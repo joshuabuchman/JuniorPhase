@@ -1,0 +1,153 @@
+<html>
+  <head>
+    <style>
+        body {
+          font-family: sans-serif;
+        }
+
+        #customers {
+          list-style-type: none;
+          padding: 0;
+        }
+
+
+        #customers li {
+          padding: 1rem;
+          margin-bottom: 1rem;
+          background-color: linen;
+        }
+
+        #customers li.vip {
+          background-color: seaGreen;
+          color: white;
+        }
+
+        #legend {
+          border: solid 1px black;
+          display: flex;
+          align-items: center;
+          width: 200px;
+        }
+
+        #legend > * {
+          margin: 1rem;
+        }
+
+        #vip-swatch {
+          background-color: seaGreen;
+          width: 50px;
+          height: 50px;
+        }
+
+        .newCust{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: solid 1px black;
+            padding: 3rem;
+            margin: 0 20%;
+        }
+
+        .newCust > *{
+            margin: 2px;
+           padding: 1px;
+        }
+
+        input, button {
+            height: 3rem;
+        }
+        .error{
+            color: red;
+            list-style-type: circle;
+            visibility: visible;
+        }
+
+        .notError{
+            visibility: hidden;
+        }
+
+     
+
+    </style>
+  </head>
+  <body>
+    <h1>Acme Customers VIP</h1>
+    <form class ='newCust'>
+        <ul class='notError' id='Name'>Name Required</ul>
+        <ul class='notError' id='Date'>Please enter valid date</ul>
+        <input name= 'name' type="text" placeholder="Enter Name">
+        <input name= 'dateOfHire' type="text" placeholder="Date Joined">
+        <div id='checkbox'>
+            <label for="checkbox">VIP</label> 
+            <input name='vip' type="checkbox">
+        </div>
+        <button>Create</button>
+    </form>
+    <ul id='customers'>
+    </ul>
+    <div id='legend'>
+      <label>VIP</label>
+      <div id='vip-swatch'></div>
+    </div>
+
+  <script>
+      const customers = [
+      { id: 1, name: 'moe', email: 'moe@gmail.com', isVIP: true, dateJoined: '07/05/2018'},
+      { id: 2, name: 'larry', isVIP: true, email: 'larry@gmail.com', dateJoined: '01/01/2019'},
+      { id: 4, name: 'shep', email: 'shep@gmail.com', dateJoined: '03/19/2000'},
+     ];
+
+
+    const list = document.querySelector('#customers');
+    const button = document.querySelector('button')
+    const form = document.querySelector('.newCust')
+
+    customers.forEach(customer => {
+        customer.dateJoined = new Date(customer.dateJoined)
+    })
+
+    customers.sort((a,b)=> a.dateJoined - b.dateJoined)
+
+    const render = ()=> {
+    
+      let html = customers.map( customer => {
+        let oneYear = 1000*60*60*24*365
+        let diff = new Date() - customer.dateJoined
+        return `
+          <li class='${ customer.isVIP ? 'vip': ''}'>
+            ${ customer.name } Joined On ${ customer.dateJoined.toLocaleDateString() } And has been a member for ${(diff/oneYear).toFixed(2)} years
+          </li>
+        `;
+      }).join('');
+      list.innerHTML = html;
+    };
+
+    button.addEventListener('click', (ev)=>{
+        ev.preventDefault()
+        const nameInput = form.querySelector('[name="name"]')
+        const dateInput = form.querySelector('[name="dateOfHire"]')
+        const vipInput = form.querySelector('[name ="vip"]')
+        const nameData = nameInput.value
+        const dateData = dateInput.value
+        let vipData = vipInput.checked
+        const finalDate = new Date(dateData)
+        customers.push({name: nameData, dateJoined:finalDate, isVIP:vipData})
+        if(nameData === '' || finalDate.toString() === 'Invalid Date'){
+            if(nameData === ''){
+            document.getElementById("Name").className = 'error'
+            }
+            if(finalDate.toString() === 'Invalid Date'){
+            document.getElementById("Date").className = 'error'
+            }
+            return
+        }
+        
+        console.log(finalDate.toString() === 'Invalid Date')
+        render()
+    })
+
+    render();
+  </script>
+
+  </body>
+</html>
